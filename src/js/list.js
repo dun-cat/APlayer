@@ -1,15 +1,13 @@
 import tplListItem from '../template/list-item.art';
 import utils from './utils';
-import smoothScroll from 'smoothscroll';
 
 class List {
     constructor(player) {
         this.player = player;
         this.index = 0;
         this.audios = this.player.options.audio;
-        this.showing = true;
         this.player.template.list.style.height = `${Math.min(this.player.template.list.scrollHeight, this.player.options.listMaxHeight)}px`;
-
+        this.showing = !this.player.options.listFolded;
         this.bindEvents();
     }
 
@@ -34,17 +32,22 @@ class List {
     show() {
         this.showing = true;
         this.player.template.list.scrollTop = this.index * 33;
-        this.player.template.list.style.height = `${Math.min(this.player.template.list.scrollHeight, this.player.options.listMaxHeight)}px`;
+        this.player.template.aplayerWrap.classList.remove('aplayer-wrap-hide');
+
+        // this.player.template.aplayerWrap.style.height = `${Math.min(this.player.template.aplayerWrap.scrollHeight, this.player.options.listMaxHeight)}px`;
         this.player.events.trigger('listshow');
     }
 
     hide() {
         this.showing = false;
-        this.player.template.list.style.height = `${Math.min(this.player.template.list.scrollHeight, this.player.options.listMaxHeight)}px`;
-        setTimeout(() => {
-            this.player.template.list.style.height = '0px';
-            this.player.events.trigger('listhide');
-        }, 0);
+        this.player.template.aplayerWrap.classList.add('aplayer-wrap-hide');
+        this.player.events.trigger('listhide');
+        // this.player.template.aplayerWrap.style.height = `${Math.min(this.player.template.aplayerWrap.scrollHeight, this.player.options.listMaxHeight)}px`;
+        // setTimeout(() => {
+        //     this.player.template.aplayerWrap.classList.add('aplayer-wrap-hide');
+        //     this.player.template.aplayerWrap.style.height = '0px';
+        //     this.player.events.trigger('listhide');
+        // }, 0);
     }
 
     toggle() {
@@ -149,6 +152,8 @@ class List {
 
             // set html
             this.player.template.pic.style.backgroundImage = audio.cover ? `url('${audio.cover}')` : '';
+            this.player.template.bg.style.backgroundImage = audio.cover ? `url('${audio.cover}')` : '';
+
             this.player.theme(this.audios[this.index].theme || this.player.options.theme, this.index, false);
             this.player.template.title.innerHTML = audio.name;
             this.player.template.author.innerHTML = audio.artist ? ' - ' + audio.artist : '';
@@ -159,7 +164,8 @@ class List {
             }
             this.player.container.querySelectorAll('.aplayer-list li')[this.index].classList.add('aplayer-list-light');
 
-            smoothScroll(this.index * 33, 500, null, this.player.template.list);
+            this.player.template.list.scrollTop = this.index * 33;
+            // smoothScroll(this.index * 33, 500, null, this.player.template.list);
 
             this.player.setAudio(audio);
 

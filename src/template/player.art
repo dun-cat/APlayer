@@ -1,4 +1,5 @@
 {{ if !options.fixed }}
+<div class="aplayer-bg"><div class="aplayer-blur"></div></div>
 <div class="aplayer-body">
     <div class="aplayer-pic" style="{{ if cover  }}background-image: url(&quot;{{ cover }}&quot;);{{ /if }}background-color: {{ options.theme }};">
         <div class="aplayer-button aplayer-play">{{@ icons.play }}</div>
@@ -63,14 +64,26 @@
     <div class="aplayer-notice"></div>
     <div class="aplayer-miniswitcher"><button class="aplayer-icon">{{@ icons.right }}</button></div>
 </div>
-<ol class="aplayer-list{{ if options.listFolded }} aplayer-list-hide{{ /if }}">
-    {{ include './list-item.art' getObject({
-        theme: options.theme,
-        audio: options.audio,
-        index: 1
-    }) }}
-</ol>
+
+<div class="aplayer-wrap {{ if options.listFolded }} aplayer-wrap-hide{{ /if }}">
+    <ol class="aplayer-list">
+        {{ include './list-item.art' getObject({
+            theme: options.theme,
+            audio: options.audio,
+            index: 1
+        }) }}
+    </ol>
+
+    <div class="aplayer-lrc-mask">
+        <div class="aplayer-lrc-style1">
+            <div class="aplayer-lrc-contents-style1"></div>
+        </div>
+    </div>
+</div>
+
 {{ else }}
+
+
 <ol class="aplayer-list{{ if options.listFolded }} aplayer-list-hide{{ /if }}">
     {{ include './list-item.art' getObject({
         theme: options.theme,
@@ -142,4 +155,5 @@
 <div class="aplayer-lrc">
     <div class="aplayer-lrc-contents" style="transform: translateY(0); -webkit-transform: translateY(0);"></div>
 </div>
+
 {{/if}}

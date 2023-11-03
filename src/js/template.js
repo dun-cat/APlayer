@@ -28,6 +28,9 @@ class Template {
 
         this.lrc = this.container.querySelector('.aplayer-lrc-contents');
         this.lrcWrap = this.container.querySelector('.aplayer-lrc');
+        this.lrc1 = this.container.querySelector('.aplayer-lrc-contents-style1');
+        this.lrcWrap1 = this.container.querySelector('.aplayer-lrc-style1');
+        this.aplayerWrap = this.container.querySelector('.aplayer-wrap');
         this.ptime = this.container.querySelector('.aplayer-ptime');
         this.info = this.container.querySelector('.aplayer-info');
         this.time = this.container.querySelector('.aplayer-time');
@@ -47,6 +50,7 @@ class Template {
         this.order = this.container.querySelector('.aplayer-icon-order');
         this.menu = this.container.querySelector('.aplayer-icon-menu');
         this.pic = this.container.querySelector('.aplayer-pic');
+        this.bg = this.container.querySelector('.aplayer-blur');
         this.title = this.container.querySelector('.aplayer-title');
         this.author = this.container.querySelector('.aplayer-author');
         this.dtime = this.container.querySelector('.aplayer-dtime');

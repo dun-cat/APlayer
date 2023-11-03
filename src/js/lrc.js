@@ -1,8 +1,37 @@
 import tplLrc from '../template/lrc.art';
 
+function scrollToChildAtIndex(parentElement, childIndex) {
+    const children = parentElement.getElementsByTagName('p');
+
+    const targetChildElement = children[childIndex];
+
+    // 计算currentLine距离contents的顶部的高度
+    const currentLineTop = targetChildElement.offsetTop;
+
+    // 计算 container 的中央位置
+    const container = parentElement.parentNode;
+    const containerCenter = container.clientHeight / 2;
+
+    // 计算滚动高度以使currentLine居中
+    let scrollTop = currentLineTop - containerCenter;
+
+    // 防止滚动超出边界
+    if (scrollTop < 0) {
+        scrollTop = 0;
+    }
+    if (scrollTop > parentElement.clientHeight - container.clientHeight) {
+        scrollTop = parentElement.clientHeight - container.clientHeight;
+    }
+    container.scrollTo({
+        top: scrollTop,
+        behavior: 'smooth',
+    });
+}
+
 class Lrc {
     constructor(options) {
         this.container = options.container;
+        this.container1 = options.container1;
         this.async = options.async;
         this.player = options.player;
         this.parsed = [];
@@ -29,7 +58,7 @@ class Lrc {
     }
 
     update(currentTime = this.player.audio.currentTime) {
-        if (this.index > this.current.length - 1 || currentTime < this.current[this.index][0] || (!this.current[this.index + 1] || currentTime >= this.current[this.index + 1][0])) {
+        if (this.index > this.current.length - 1 || currentTime < this.current[this.index][0] || !this.current[this.index + 1] || currentTime >= this.current[this.index + 1][0]) {
             for (let i = 0; i < this.current.length; i++) {
                 if (currentTime >= this.current[i][0] && (!this.current[i + 1] || currentTime < this.current[i + 1][0])) {
                     this.index = i;
@@ -37,6 +66,10 @@ class Lrc {
                     this.container.style.webkitTransform = `translateY(${-this.index * 16}px)`;
                     this.container.getElementsByClassName('aplayer-lrc-current')[0].classList.remove('aplayer-lrc-current');
                     this.container.getElementsByTagName('p')[i].classList.add('aplayer-lrc-current');
+
+                    scrollToChildAtIndex(this.container1, this.index);
+                    this.container1.getElementsByClassName('aplayer-lrc-current')[0].classList.remove('aplayer-lrc-current');
+                    this.container1.getElementsByTagName('p')[i].classList.add('aplayer-lrc-current');
                 }
             }
         }
@@ -64,6 +97,11 @@ class Lrc {
                         this.container.innerHTML = tplLrc({
                             lyrics: this.parsed[index],
                         });
+
+                        this.container1.innerHTML = tplLrc({
+                            lyrics: this.parsed[index],
+                        });
+
                         this.update(0);
                         this.current = this.parsed[index];
                     }
@@ -75,6 +113,10 @@ class Lrc {
         }
 
         this.container.innerHTML = tplLrc({
+            lyrics: this.parsed[index],
+        });
+
+        this.container1.innerHTML = tplLrc({
             lyrics: this.parsed[index],
         });
         this.current = this.parsed[index];

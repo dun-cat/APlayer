@@ -1,4 +1,4 @@
-import Promise from 'promise-polyfill';
+// import Promise from 'promise-polyfill';
 
 import utils from './utils';
 import Icons from './icons';
@@ -76,6 +76,7 @@ class APlayer {
         if (this.options.lrcType) {
             this.lrc = new Lrc({
                 container: this.template.lrc,
+                container1: this.template.lrc1,
                 async: this.options.lrcType === 3,
                 player: this,
             });

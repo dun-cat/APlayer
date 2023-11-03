@@ -12,7 +12,7 @@ export default (options) => {
         loop: 'all',
         order: 'list',
         volume: 0.7,
-        listFolded: options.fixed,
+        listFolded: true,
         listMaxHeight: options.listmaxheight || 250,
         audio: options.music || [],
         storageName: 'aplayer-setting',
